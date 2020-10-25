@@ -25,7 +25,7 @@ contract Votez {
     
     //pour incrémenter les propositions
     uint256 private compteur;
-    string public consignes_de_vote = "0 pour oui, 1 pour non, 2 pour blanc";
+    string public consignes_de_vote = "0 pour oui, 1 pour non, 2 pour blanc"; //merci Mihai!
     address payable owner;
     
     mapping (uint => Proposal) private proposition;
@@ -52,16 +52,12 @@ contract Votez {
        _;
   }
    
-   // fonctions pour gérer les admins
-   function passerAdmin(address _addr) public adminOnly {
-       administration[_addr].admin = true;
+   // fonction pour gérer les admins
+   function changeEtatAdmin(address _addr) public adminOnly {
+       require(_addr != owner, "not allowed to target owner");
+       administration[_addr].admin ? administration[_addr].admin=false : administration[_addr].admin=true ;
    }
-   
-    function retirerAdmin(address _addr) public adminOnly {
-       require(_addr != owner, "not allowed, owner stay admin");
-       administration[_addr].admin = false;
-   }
-   
+  
    //fonctions pour gérer les warnings
    function warningPlus(address _addr) public adminOnly {
        require(_addr != owner, "not allowed");
